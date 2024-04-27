@@ -11,8 +11,8 @@ class UserController extends Controller
     // Mostrar lista de usuarios
     public function index()
     {
-        $users = User::with('photos')->get();
-        return response()->json($users);
+        $users = User::select("name","email","last_login")->get();
+        return response()->json(['users' => $users, 200]);
     }
 
     // Almacenar un nuevo usuario
@@ -58,6 +58,7 @@ class UserController extends Controller
             'name' => 'required|max:255',
             'email' => 'required|email|unique:users,email,' . $user->id,
             'password' => 'sometimes|min:6',
+            'role' => 'sometimes|min:6',
         ]);
 
         $user->update($validatedData);
